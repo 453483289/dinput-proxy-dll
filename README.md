@@ -25,17 +25,29 @@ The files included are a bare bones minimum proxy, as hacks generally must be wr
 
 #include "dinputproxy.h"
 
-HRESULT STDMETHODCALLTYPE proxy_IDirectInputDevice_GetDeviceData(struct IDirectInputDevice *idid, DWORD cbObjectData, LPDIDEVICEOBJECTDATA rgdod, LPDWORD pdwInOut, DWORD dwFlags) { proxy_IDirectInputDevice *proxydid = (proxy_IDirectInputDevice *)idid; DIDEVICEOBJECTDATA data[128]; DWORD dwCount; HRESULT ret;
+HRESULT STDMETHODCALLTYPE proxy_IDirectInputDevice_GetDeviceData(
+    struct IDirectInputDevice *idid, 
+    DWORD cbObjectData, 
+    LPDIDEVICEOBJECTDATA rgdod, 
+    LPDWORD pdwInOut,
+    DWORD dwFlags) 
+{ 
+    proxy_IDirectInputDevice *proxydid = (proxy_IDirectInputDevice *)idid; 
+    DIDEVICEOBJECTDATA data[128]; 
+    DWORD dwCount;
+    HRESULT ret;
 
-// hack here
-if (proxydid->bKeyboard)
-    ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, sizeof(data[0]), data, &dwCount, 0);
-else if (proxydid->bMouse)
-    ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, sizeof(data[0]), data, &dwCount, 0);
-else
-    ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, cbObjectData, rgdod, pdwInOut, dwFlags);
 
-return ret;
+    // hack here
+
+    if (proxydid->bKeyboard)
+        ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, sizeof(data[0]), data, &dwCount, 0);
+    else if (proxydid->bMouse)
+        ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, sizeof(data[0]), data, &dwCount, 0);
+    else
+        ret = proxydid->did->lpVtbl->GetDeviceData(proxydid->did, cbObjectData, rgdod, pdwInOut, dwFlags);
+
+    return ret;
 } 
 ```
 
