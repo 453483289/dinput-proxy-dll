@@ -6,7 +6,7 @@ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason,LPVOID v)
 	{
 		char szPath[MAX_PATH];
 
-		if (!GetSystemDirectory(szPath, sizeof(szPath)))
+		if (!GetSystemDirectory(szPath, sizeof(szPath) - 20))
 			return FALSE;
 
 		strcat(szPath, "\\dinput8.dll");
